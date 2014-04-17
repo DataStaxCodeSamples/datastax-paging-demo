@@ -32,3 +32,4 @@ To remove the tables and the schema, run the following.
     mvn clean compile exec:java -Dexec.mainClass="com.datastax.demo.SchemaTeardown"
     
     
+    
