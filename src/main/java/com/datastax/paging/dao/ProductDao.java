@@ -22,6 +22,7 @@ public class ProductDao {
 
 	private static Logger logger = LoggerFactory.getLogger( ProductDao.class );
 	
+	private Cluster cluster;
 	private Session session;
 	private static AtomicLong TOTAL_PRODUCTS = new AtomicLong(0);
 	
@@ -37,7 +38,7 @@ public class ProductDao {
 
 	public ProductDao(String[] contactPoints) {
 
-		Cluster cluster = Cluster.builder().addContactPoints(contactPoints).build();
+		this.cluster = Cluster.builder().addContactPoints(contactPoints).build();
 		this.session = cluster.connect();
 
 		this.insertStmtProduct = session.prepare(INSERT_INTO_PRODUCT);
@@ -87,6 +88,11 @@ public class ProductDao {
 
 	private Product createProduct(Row row) {
 		return new Product(row.getString("productId"), row.getInt("capacityLeft"), row.getSet("orderIds", String.class));
+	}
+
+	public void close() {
+		this.session.close();
+		this.cluster.close();
 	}
 
 }

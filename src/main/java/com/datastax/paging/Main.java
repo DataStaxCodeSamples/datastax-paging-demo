@@ -1,7 +1,5 @@
 package com.datastax.paging;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,19 +32,12 @@ public class Main {
 		timer.end();
 		logger.info("Paging demo took " + timer.getTimeTakenSeconds() + " secs. Total Products : " + dao.getTotalProducts());
 
+		dao.close();
 		System.exit(0);
 	}
 
 	private void printProducts(ProductDao dao) {
 		dao.getAllProducts();
-	}
-
-	private void sleep(int millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
